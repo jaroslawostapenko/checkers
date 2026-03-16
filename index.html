@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Russian Checkers AI</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Play Russian Checkers (Shashki) against an advanced AI. Features Gemini AI Grandmaster analysis, clean interface, and strategic gameplay. Play for free online!">
+    <meta name="keywords" content="Russian Checkers, Shashki, Checkers AI, Play Checkers Online, Board Game, Draughts, Free Checkers Game, Strategy Game, AI Game Analysis, HTML5 Game, Browser Game">
+    <link rel="canonical" href="https://checkers.mqttwebs.com/" />
+
     <style>
         /* --- Root Variables & Global Styles --- */
         :root {
@@ -451,11 +457,11 @@
 
 
         // --- GAME STATE ---
-        let boardState = [];
+        let boardState =[];
         let currentPlayer = PLAYER1;
         let selectedPiece = null; // { row, col }
         let validMoves = [];
-        let mandatoryCaptures = [];
+        let mandatoryCaptures =[];
         let isPlayerTurn = true;
         let captures = { [PLAYER1]: 0, [PLAYER2]: 0 };
         let lastMove = { from: null, to: null };
@@ -469,10 +475,10 @@
             currentPlayer = PLAYER1;
             selectedPiece = null;
             validMoves = [];
-            mandatoryCaptures = [];
+            mandatoryCaptures =[];
             isPlayerTurn = true;
             lastMove = { from: null, to: null };
-            captures = { [PLAYER1]: 0, [PLAYER2]: 0 };
+            captures = { [PLAYER1]: 0,[PLAYER2]: 0 };
             
             createBoardDOM();
             renderBoard();
@@ -771,7 +777,7 @@
          */
         function findAllValidMoves(player, board = boardState) {
             let moves = [];
-            let captures = [];
+            let captures =[];
             for (let r = 0; r < BOARD_SIZE; r++) {
                 for (let c = 0; c < BOARD_SIZE; c++) {
                     const piece = board[r][c];
@@ -838,7 +844,7 @@
                 const newRow = row + dr;
                 const newCol = col + dc;
                 if (isValidSquare(newRow, newCol) && board[newRow][newCol] === PIECES.EMPTY) {
-                    moves.push({ from: {row, col}, to: {row: newRow, col: newCol}, captures: [] });
+                    moves.push({ from: {row, col}, to: {row: newRow, col: newCol}, captures:[] });
                 }
             }
             return moves;
@@ -853,14 +859,14 @@
          */
         function findKingSimpleMoves(row, col, board) {
             const moves = [];
-            const directions = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+            const directions = [[-1, -1],[-1, 1], [1, -1], [1, 1]];
             for (const [dr, dc] of directions) {
                 for (let i = 1; i < BOARD_SIZE; i++) {
                     const newRow = row + i * dr;
                     const newCol = col + i * dc;
                     if (!isValidSquare(newRow, newCol)) break;
                     if (board[newRow][newCol] === PIECES.EMPTY) {
-                        moves.push({ from: {row, col}, to: {row: newRow, col: newCol}, captures: [] });
+                        moves.push({ from: {row, col}, to: {row: newRow, col: newCol}, captures:[] });
                     } else {
                         break;
                     }
@@ -1176,11 +1182,9 @@
 
             // 1. Format Board State for LLM (FEN-like representation)
             const pieceMap = {
-                [PIECES.EMPTY]: '.',
-                [PIECES.PLAYER1_MAN]: 'w',
+                [PIECES.EMPTY]: '.',[PIECES.PLAYER1_MAN]: 'w',
                 [PIECES.PLAYER1_KING]: 'W',
-                [PIECES.PLAYER2_MAN]: 'b',
-                [PIECES.PLAYER2_KING]: 'B',
+                [PIECES.PLAYER2_MAN]: 'b',[PIECES.PLAYER2_KING]: 'B',
             };
             
             let boardRepresentation = "Current 8x8 Board State (Top=R0, Bottom=R7; Player=White/w/W, AI=Black/b/B):\n";
@@ -1209,7 +1213,7 @@ Based on this board state, what is the best move for White, and what is the stra
 
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
-                tools: [{ "google_search": {} }],
+                tools:[{ "google_search": {} }],
                 systemInstruction: { parts: [{ text: systemPrompt }] },
             };
 
